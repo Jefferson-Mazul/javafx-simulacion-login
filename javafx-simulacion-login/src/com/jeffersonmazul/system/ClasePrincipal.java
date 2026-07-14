@@ -4,20 +4,21 @@
  */
 package com.jeffersonmazul.system;
 
-import com.jeffersonmazul.controller.Controlador;
+import com.jeffersonmazul.controller.SceneManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class ClasePrincipal extends Application {
 
-   @Override
-    public void start(Stage stage) {
-
-        Controlador.getInstancia().iniciar(stage);
-
-    }
-
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void start(Stage escenarioRaiz) {;
+    
+    SceneManager.getInstanciaSceneManager().setEscenarioPrincipal(escenarioRaiz);
+    SceneManager.getInstanciaSceneManager().ventanaLogin();
+
     }
 }

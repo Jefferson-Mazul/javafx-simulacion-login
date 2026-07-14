@@ -6,17 +6,9 @@ package com.jeffersonmazul.model;
 
 /**
  *
- * @author jeff2
+ * @author informatica
  */
-public class Modelo {
-
-    private String estado;
-
-    public Modelo() {
-        estado = "Activo";
-    }
-
-    public String getEstado() {
-        return estado;
-    }
+public enum Rol {
+    ADMIN,
+    USER
 }

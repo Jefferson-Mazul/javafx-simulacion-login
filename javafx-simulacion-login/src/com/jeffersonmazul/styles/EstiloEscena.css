@@ -1,0 +1,21 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 14 jul 2026, 09:53:30
+    Author     : informatica
+*/
+
+.ventana-login{
+    
+    -fx-background-color:white;
+    -fx-background-radius: 20;
+    
+}
+
+.boton-borrar{
+    -fx-background-color: blue;
+    -fx-background-radius: 100;
+    
+}
