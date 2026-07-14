@@ -4,17 +4,20 @@
  */
 package com.jeffersonmazul.system;
 
-/**
- *
- * @author informatica
- */
-public class ClasePrincipal {
+import com.jeffersonmazul.controller.Controlador;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class ClasePrincipal extends Application {
+
+   @Override
+    public void start(Stage stage) {
+
+        Controlador.getInstancia().iniciar(stage);
+
     }
-    
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
