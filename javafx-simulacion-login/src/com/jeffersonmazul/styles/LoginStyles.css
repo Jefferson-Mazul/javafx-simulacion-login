@@ -19,3 +19,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-radius: 100;
     
 }
+
+TextField.error{
+    -fx-border-color: blue;
+    -fx-border-width: 4px;
+}
+
+TextField.empty{
+
+    -fx-border-color: red;
+    -fx-border-width: 2px;    
+}
+
+PasswordField.empty{
+    
+    -fx-border-color: error;
+    -fx-border-width: 2px;    
+}
+
+
+TextField.error{
+
+    -fx-border-color: brown;
+    -fx-border-width: 2px;    
+}
+
+PasswordField.error{
+    
+    -fx-border-color: brown;
+    -fx-border-width: 2px;    
+}

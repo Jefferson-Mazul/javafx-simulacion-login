@@ -47,9 +47,11 @@ public class LoginView extends BorderPane {
    private GridPane formulario;
     private Button btnIniciarSesion;
     private VBox cajaVertical;
+    private final String RUTA_ESTILOS = "/com/jeffersonmazul/styles/";
 
     private LoginView() {
         
+        this.getStylesheets().add(RUTA_ESTILOS + "LoginStyles.css");
         
         this.setPadding(new Insets(20));
         
