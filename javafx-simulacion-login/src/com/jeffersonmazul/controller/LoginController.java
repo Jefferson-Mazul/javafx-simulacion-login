@@ -83,7 +83,7 @@ public class LoginController {
             if (usuario == null)
                 JOptionPane.showMessageDialog(null, "Valide sus credenciales");
             else
-                JOptionPane.showMessageDialog(null, "Jolas");
+                SceneManager.getInstanciaSceneManager().ventanaBienvenida();
         }
     }
 }

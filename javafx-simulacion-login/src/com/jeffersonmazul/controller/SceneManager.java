@@ -4,10 +4,12 @@
  */
 package com.jeffersonmazul.controller;
 
+import com.jeffersonmazul.view.BienvenidaView;
 import com.jeffersonmazul.view.LoginView;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.swing.JOptionPane;
@@ -60,6 +62,26 @@ public class SceneManager {
             cambiarEscenaPrincipal(login, 600, 500);
             this.escenaPrincipal.setFill(Color. TRANSPARENT);
             new LoginController(login);
+            
+        } catch (NullPointerException objetoNulo) {
+            JOptionPane.showMessageDialog(null, "Error de objeto nulo: Ventana Login");
+            objetoNulo.printStackTrace(); //Imprime todo el camino hacia el error
+        } catch (Exception errorPadre) {
+            JOptionPane.showMessageDialog(null, "Error padre: Ventana Login");
+            errorPadre.printStackTrace();
+        }
+    }
+    
+    public void ventanaBienvenida(){
+        try {
+            escenarioSecundario = new Stage();
+            this.escenarioSecundario.initStyle(StageStyle.TRANSPARENT);
+            this.escenarioSecundario.initModality(Modality.APPLICATION_MODAL);
+            BienvenidaView bienvenida = new BienvenidaView();
+            escenaPrincipal = new Scene(bienvenida, 200, 300);
+            this.escenarioSecundario.setScene(escenaPrincipal);
+            this.escenarioSecundario.sizeToScene();
+            this.escenarioSecundario.show();
             
         } catch (NullPointerException objetoNulo) {
             JOptionPane.showMessageDialog(null, "Error de objeto nulo: Ventana Login");
