@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.jeffersonmazul.controller;
 
+import com.jeffersonmazul.model.Usuario;
 import com.jeffersonmazul.view.BienvenidaView;
 import com.jeffersonmazul.view.LoginView;
 import javafx.scene.Scene;
@@ -14,84 +11,116 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author jeff2
- */
 public class SceneManager {
 
     private static SceneManager instanciaSceneManager;
     private Stage escenarioPrincipal;
     private Stage escenarioSecundario;
     private Scene escenaPrincipal;
+    private Scene escenaSecundaria;
 
+    /**
+     * Constructor privado para restringir la instanciación externa.
+     */
     private SceneManager() {
     }
 
+    /**
+     * Configura y aplica un panel raíz sobre el escenario principal del
+     * sistema.
+     *
+     * @param panel Contenedor visual base.
+     * @param ancho Dimensión horizontal de la ventana.
+     * @param alto Dimensión vertical de la ventana.
+     */
     public void cambiarEscenaPrincipal(Pane panel, int ancho, int alto) {
         try {
             escenaPrincipal = new Scene(panel, ancho, alto);
-            
-            escenaPrincipal.getStylesheets().add(getClass()
-                    .getResource("/com/jeffersonmazul/styles/EstiloEscena.css")
-                    .toExternalForm());
-////            
-////            btnCerrarVentana.getStylesheets().add(
-////                                        getClass().getResource("/com/jeffersonmazul/styles/EstiloEscena.css")
-////                    .toExternalForm());
 
-            
+            // Carga e inyección de la hoja de estilos CSS de forma segura
+            var cssResource = getClass().getResource("/com/jeffersonmazul/styles/LoginStyles.css");
+            if (cssResource != null) {
+                escenaPrincipal.getStylesheets().add(cssResource.toExternalForm());
+            }
+
             escenaPrincipal.setFill(Color.TRANSPARENT);
             escenarioPrincipal.setScene(escenaPrincipal);
             escenarioPrincipal.show();
 
         } catch (NullPointerException objetoNulo) {
             JOptionPane.showMessageDialog(null, "Error de objeto nulo: CambiarEscena Principal");
-            objetoNulo.printStackTrace(); //Imprime todo el camino hacia el error
+            objetoNulo.printStackTrace();
         } catch (Exception errorPadre) {
             JOptionPane.showMessageDialog(null, "Error padre: Cambiar Escena Principal");
             errorPadre.printStackTrace();
         }
     }
 
+    /**
+     * Prepara e inicializa la interfaz gráfica del Login principal.
+     */
     public void ventanaLogin() {
         try {
-            //Metodo que oculta las opciones de ventana por defecto
+            // Se eliminan las decoraciones por defecto del sistema operativo
             this.escenarioPrincipal.initStyle(StageStyle.TRANSPARENT);
             LoginView login = LoginView.getInstanciaLoginView();
             cambiarEscenaPrincipal(login, 600, 500);
-            this.escenaPrincipal.setFill(Color. TRANSPARENT);
+            this.escenaPrincipal.setFill(Color.TRANSPARENT);
             new LoginController(login);
-            
+
         } catch (NullPointerException objetoNulo) {
             JOptionPane.showMessageDialog(null, "Error de objeto nulo: Ventana Login");
-            objetoNulo.printStackTrace(); //Imprime todo el camino hacia el error
-        } catch (Exception errorPadre) {
-            JOptionPane.showMessageDialog(null, "Error padre: Ventana Login");
-            errorPadre.printStackTrace();
-        }
-    }
-    
-    public void ventanaBienvenida(){
-        try {
-            escenarioSecundario = new Stage();
-            this.escenarioSecundario.initStyle(StageStyle.TRANSPARENT);
-            this.escenarioSecundario.initModality(Modality.APPLICATION_MODAL);
-            BienvenidaView bienvenida = new BienvenidaView();
-            escenaPrincipal = new Scene(bienvenida, 200, 300);
-            this.escenarioSecundario.setScene(escenaPrincipal);
-            this.escenarioSecundario.sizeToScene();
-            this.escenarioSecundario.show();
-            
-        } catch (NullPointerException objetoNulo) {
-            JOptionPane.showMessageDialog(null, "Error de objeto nulo: Ventana Login");
-            objetoNulo.printStackTrace(); //Imprime todo el camino hacia el error
+            objetoNulo.printStackTrace();
         } catch (Exception errorPadre) {
             JOptionPane.showMessageDialog(null, "Error padre: Ventana Login");
             errorPadre.printStackTrace();
         }
     }
 
+    /**
+     * @param usuarioLogueado Instancia del usuario que completó la
+     * autenticación con éxito.
+     */
+     public void ventanaBienvenida(Usuario usuarioLogueado) {
+        try {
+            // 1. Inicialización y jerarquía del escenario secundario
+            escenarioSecundario = new Stage();
+            this.escenarioSecundario.initStyle(StageStyle.TRANSPARENT);
+            this.escenarioSecundario.initModality(Modality.APPLICATION_MODAL);
+            this.escenarioSecundario.initOwner(escenarioPrincipal);
+
+            // 2. Obtención de la vista mediante su patrón Singleton
+            BienvenidaView bienvenida = BienvenidaView.getInstanciaBienvenidaView();
+            
+            if (bienvenida.getScene() != null) {
+                bienvenida.getScene().setRoot(new javafx.scene.layout.Pane());
+            }
+
+            // 3. Inyección dinámica del nombre completo del usuario autenticado
+            bienvenida.setNombreUsuario(usuarioLogueado.getNombreCompleto());
+
+            // 4. Configuración de la escena y remoción del fondo por defecto
+            escenaSecundaria = new Scene(bienvenida, 400, 300);
+            escenaSecundaria.setFill(Color.TRANSPARENT);
+
+            // 5. Asignación y renderizado de la ventana secundaria
+            this.escenarioSecundario.setScene(escenaSecundaria);
+            this.escenarioSecundario.sizeToScene();
+            this.escenarioSecundario.show();
+
+            // 6. Vinculación del controlador encargado de la lógica y el arrastre
+            new BienvenidaController(bienvenida);
+
+        } catch (Exception errorPadre) {
+            errorPadre.printStackTrace();
+        }
+    }
+
+    /**
+     * Obtiene la instancia única global del administrador de escenas.
+     *
+     * @return Instancia única de SceneManager.
+     */
     public static SceneManager getInstanciaSceneManager() {
         if (instanciaSceneManager == null) {
             instanciaSceneManager = new SceneManager();
@@ -127,4 +156,11 @@ public class SceneManager {
         this.escenaPrincipal = escenaPrincipal;
     }
 
+    public Scene getEscenaSecundaria() {
+        return escenaSecundaria;
+    }
+
+    public void setEscenaSecundaria(Scene escenaSecundaria) {
+        this.escenaSecundaria = escenaSecundaria;
+    }
 }

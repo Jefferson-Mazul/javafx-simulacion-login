@@ -33,7 +33,7 @@ TextField.empty{
 
 PasswordField.empty{
     
-    -fx-border-color: error;
+    -fx-border-color: red;
     -fx-border-width: 2px;    
 }
 

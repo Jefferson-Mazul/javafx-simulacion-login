@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.jeffersonmazul.view;
 
 import com.jeffersonmazul.controller.ImageController;
+import java.net.URL;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -26,92 +23,101 @@ import javafx.scene.paint.Paint;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-/**
- *
- * @author jeff2
- */
 public class LoginView extends BorderPane {
 
     public static LoginView instanciaLoginView;
+
+    // Contenedores y componentes de la barra superior
     private HBox barraDeVentana;
     private Button btnCerrarVentana;
     private Label lblTituloVentana;
-    
+
+    // Componentes del cuerpo del formulario
     private ImageView imgLogoLogin;
     private TextField txtNombreUsuario;
     private Label lblNombreUsuario;
-    
     private PasswordField pwdClave;
     private Label lblClave;
-    
-   private GridPane formulario;
+
+    private GridPane formulario;
     private Button btnIniciarSesion;
     private VBox cajaVertical;
     private final String RUTA_ESTILOS = "/com/jeffersonmazul/styles/";
 
     private LoginView() {
-        
-        this.getStylesheets().add(RUTA_ESTILOS + "LoginStyles.css");
-        
+
+        // Carga e inyección segura de la hoja de estilos CSS de la aplicación
+        URL cssResource = getClass().getResource(RUTA_ESTILOS + "LoginStyles.css");
+        if (cssResource != null) {
+            this.getStylesheets().add(cssResource.toExternalForm());
+        }
+
+        // Espaciados y dimensionamiento del contenedor raíz
         this.setPadding(new Insets(20));
-        
+
+        // Diseño de bordesAqua con esquinas redondeadas
         this.setBorder(new Border(
                 new BorderStroke(Color.AQUA,
                         BorderStrokeStyle.SOLID,
-                        new CornerRadii(25), 
+                        new CornerRadii(25),
                         new BorderWidths(12))
         ));
-        
+
+        // Configuración decorativa del fondo de la ventana
         this.setBackground(new Background(
                 new BackgroundFill(Paint.valueOf("#AFC06A"),
-                new CornerRadii(22),
-                Insets.EMPTY)
+                        new CornerRadii(22),
+                        Insets.EMPTY)
         ));
-        
+
+        // 1. Configuración estructural de la barra superior
         barraDeVentana = new HBox(20);
+        barraDeVentana.setAlignment(Pos.CENTER_LEFT);
         btnCerrarVentana = new Button("X");
         lblTituloVentana = new Label("JavaFX - MAT - Simulador login");
-        barraDeVentana.getChildren().addAll( btnCerrarVentana, lblTituloVentana);
+        barraDeVentana.getChildren().addAll(btnCerrarVentana, lblTituloVentana);
         this.setTop(barraDeVentana);
-        
+
+        // 2. Configuración y centrado de los contenedores del cuerpo
         cajaVertical = new VBox(15);
+        cajaVertical.setAlignment(Pos.CENTER);
+
         formulario = new GridPane();
-        
+        formulario.setHgap(10); // Espaciado horizontal entre celdas
+        formulario.setVgap(10); // Espaciado vertical entre celdas
+        formulario.setAlignment(Pos.CENTER); // Centrado geométrico de la cuadrícula
+
+        // Inicialización de campos y textos interactivos
         lblNombreUsuario = new Label("Ingrese su Nombre Usuario");
         txtNombreUsuario = new TextField();
-        
-        lblClave = new Label("Ingres su clave");
+
+        lblClave = new Label("Ingrese su clave");
         pwdClave = new PasswordField();
-        
+
+        // Construcción de la cuadrícula del formulario
         formulario.add(lblNombreUsuario, 0, 0);
         formulario.add(txtNombreUsuario, 1, 0);
-        
         formulario.add(lblClave, 0, 1);
         formulario.add(pwdClave, 1, 1);
-        
+
         btnIniciarSesion = new Button("Iniciar Sesion");
-        
+
+        // Carga y dimensionamiento del logotipo
         imgLogoLogin = new ImageView(new ImageController().getImageLogin("logo"));
         imgLogoLogin.setFitHeight(100);
         imgLogoLogin.setFitWidth(100);
         imgLogoLogin.setCache(true);
-        
-        cajaVertical.setAlignment(Pos.CENTER);
+
+        // Agrupación final en el contenedor vertical central
         cajaVertical.getChildren().addAll(imgLogoLogin, formulario, btnIniciarSesion);
-        
         this.setCenter(cajaVertical);
-
-//        this.getStyleClass().add("ventana-login");
-//        
-//        this.getStyleClass().add("boton-borrar");
-        
-//       //Comportamiento del boton
-//       btnCerrarVentana.setOnAction(evento -> {
-//       SceneManager.getInstanciaSceneManager().getEscenarioPrincipal().close();
-//       });
-
     }
 
+    /**
+     * Obtiene la instancia única global de la interfaz del Login.
+     *
+     * @return Instancia única de LoginView.
+     */
     public static LoginView getInstanciaLoginView() {
         if (instanciaLoginView == null) {
             instanciaLoginView = new LoginView();
@@ -121,10 +127,6 @@ public class LoginView extends BorderPane {
 
     public static void setInstanciaLoginView(LoginView instanciaLoginView) {
         LoginView.instanciaLoginView = instanciaLoginView;
-    }
-
-    public void construirVista() {
-
     }
 
     public HBox getBarraDeVentana() {
@@ -171,7 +173,7 @@ public class LoginView extends BorderPane {
         return lblNombreUsuario;
     }
 
-    public void setLblNombreUsuario(Label lblNumeroUsuario) {
+    public void setLblNombreUsuario(Label lblNombreUsuario) {
         this.lblNombreUsuario = lblNombreUsuario;
     }
 
@@ -198,6 +200,4 @@ public class LoginView extends BorderPane {
     public void setCajaVertical(VBox cajaVertical) {
         this.cajaVertical = cajaVertical;
     }
-   
-    
 }
